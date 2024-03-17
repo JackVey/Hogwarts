@@ -50,7 +50,8 @@ public class Menu {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
-    static String getInput(){
+    static String getInput(String message){
+        System.out.println(message);
         Console console = System.console();
         return console.readLine();
     }
