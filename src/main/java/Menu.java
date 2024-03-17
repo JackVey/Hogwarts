@@ -32,5 +32,10 @@ public class Menu {
     static void displaySearchMenu(){
 
     }
-    
+    static void displayCommentMenu(){
+
+    }
+    static void displayRatingMenu(){
+        
+    }
 }
