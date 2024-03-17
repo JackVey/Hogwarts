@@ -1,9 +1,12 @@
 public class Menu {
     static void displayMainMenu(){
-
+        System.out.println("Welcome to \"Hogwarts school of witchcraft and wizardry\" management system!");
+        System.out.println("[1] Sing in");
+        System.out.println("[2] Request for account");
+        System.out.println("[3] Exit");
     }
     static void displayHomeMenu(){
-        
+
     }
     static void displayStudentDashboard(){
 
