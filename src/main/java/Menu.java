@@ -77,7 +77,7 @@ public class Menu {
         System.out.flush();
     }
     static String getInput(String message){
-        System.out.println(message);
+        System.out.print(message);
         Console console = System.console();
         return console.readLine();
     }
