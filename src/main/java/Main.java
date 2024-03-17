@@ -8,7 +8,4 @@ public class Main {
         // TODO: Program starts from here
     }
 
-    public static void runMenu() {
-        // TODO: Menu will be shown here...
-    }
 }
