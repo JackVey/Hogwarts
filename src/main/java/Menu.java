@@ -57,7 +57,7 @@ public class Menu {
         System.out.println("Enter required infos or type BACK to return");
         getInput("Enter your name: ");
         getInput("Enter your roll: ");
-        System.out.println("We will message you once you are allowed to creat account");
+        System.out.println("Your account will be created soon");
         getInput("Press Enter to continue...");
     }
     static void displayCourses(){
