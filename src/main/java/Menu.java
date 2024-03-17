@@ -47,18 +47,30 @@ public class Menu {
     }
     static void displaySingInMenu(){
         clearPage();
-        //should pass these arguments to a method to being validated
         System.out.println("Enter required infos or type BACK to return");
-        getInput("Enter username: ");
-        getInput("Enter password: ");
-        getInput("Enter your roll(Student, Teacher, Admin): ");
+        String username = getInput("Enter username: ");
+        if (username.equals("BACK"))
+            displayMainMenu();
+        String password = getInput("Enter password: ");
+        if (password.equals("BACK"))
+            displayMainMenu();
+        String roll = getInput("Enter your roll(Student, Teacher, Admin): ");
+        if (roll.equals("BACK"))
+            displayMainMenu();
+        //TODO -> should pass these arguments to a method to being validated
     }
     static void displaySingUpMenu(){
         clearPage();
-        ////should pass these arguments to a method to being validated
         System.out.println("Enter required infos or type BACK to return");
-        getInput("Enter your name: ");
-        getInput("Enter your roll: ");
+        String name = getInput("Enter your name: ");
+        if (name.equals("BACK"))
+            displayMainMenu();
+        String roll = getInput("Enter your roll: ");
+        if (name.equals("BACK"))
+            displayMainMenu();
+
+        //TODO -> should pass these arguments to a method to being validated
+
         System.out.println("Your account will be created soon");
         getInput("Press Enter to continue...");
         displayMainMenu();
