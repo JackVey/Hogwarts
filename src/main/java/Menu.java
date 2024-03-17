@@ -1,11 +1,37 @@
 import java.io.Console;
+import java.util.concurrent.TimeUnit;
 
 public class Menu {
     static void displayMainMenu(){
+        clearPage();
         System.out.println("Welcome to \"Hogwarts school of witchcraft and wizardry\" management system!");
         System.out.println("[1] Sing in");
         System.out.println("[2] Request for account");
         System.out.println("[3] Exit");
+        switch (getInput("Please choose a function by its number: ")){
+            case "1":
+                displaySingInMenu();
+                break;
+            case "2":
+                displaySingUpMenu();
+                break;
+            case "3":
+                clearPage();
+                System.exit(0);
+                break;
+            default:
+                System.out.println("invalid input!");
+                try{
+                    TimeUnit.SECONDS.sleep(3);
+                    clearPage();
+                    displayMainMenu();
+                }
+                catch (Exception e){
+                    clearPage();
+                    displayMainMenu();
+                }
+                break;
+        }
     }
     static void displayHomeMenu(){
 
