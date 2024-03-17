@@ -47,6 +47,7 @@ public class Menu {
     }
     static void displaySingInMenu(){
         //should pass these arguments to a method to being validated
+        System.out.println("Enter required infos or type BACK to return");
         getInput("Enter username: ");
         getInput("Enter password: ");
         getInput("Enter your roll(Student, Teacher, Admin): ");
