@@ -52,7 +52,11 @@ public class Menu {
         getInput("Enter your roll(Student, Teacher, Admin): ");
     }
     static void displaySingUpMenu(){
-
+        ////should pass these arguments to a method to being validated
+        getInput("Enter your name: ");
+        getInput("Enter your roll: ");
+        System.out.println("We will message you once you are allowed to creat account");
+        getInput("Press Enter to continue...");
     }
     static void displayCourses(){
 
