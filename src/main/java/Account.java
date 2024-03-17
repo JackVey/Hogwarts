@@ -1,6 +1,6 @@
 import java.util.UUID;
 
-public class Account {
+public class Account implements AccountManagement{
     private String username;
     // TODO: Passwords should hashed
     private String password;
