@@ -1,3 +1,5 @@
+import java.io.Console;
+
 public class Menu {
     static void displayMainMenu(){
         System.out.println("Welcome to \"Hogwarts school of witchcraft and wizardry\" management system!");
@@ -47,5 +49,9 @@ public class Menu {
     static void clearPage(){
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+    static String getInput(){
+        Console console = System.console();
+        return console.readLine();
     }
 }
