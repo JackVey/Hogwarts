@@ -54,6 +54,7 @@ public class Menu {
     }
     static void displaySingUpMenu(){
         ////should pass these arguments to a method to being validated
+        System.out.println("Enter required infos or type BACK to return");
         getInput("Enter your name: ");
         getInput("Enter your roll: ");
         System.out.println("We will message you once you are allowed to creat account");
