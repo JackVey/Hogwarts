@@ -59,6 +59,7 @@ public class Menu {
         getInput("Enter your roll: ");
         System.out.println("Your account will be created soon");
         getInput("Press Enter to continue...");
+        displayMainMenu();
     }
     static void displayCourses(){
 
