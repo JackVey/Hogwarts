@@ -2,6 +2,9 @@ public class Menu {
     static void displayMainMenu(){
 
     }
+    static void displayHomeMenu(){
+        
+    }
     static void displayStudentDashboard(){
 
     }
@@ -36,6 +39,6 @@ public class Menu {
 
     }
     static void displayRatingMenu(){
-        
+
     }
 }
