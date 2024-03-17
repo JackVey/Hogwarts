@@ -46,7 +46,10 @@ public class Menu {
 
     }
     static void displaySingInMenu(){
-
+        //should pass these arguments to a method to being validated
+        getInput("Enter username: ");
+        getInput("Enter password: ");
+        getInput("Enter your roll(Student, Teacher, Admin): ");
     }
     static void displaySingUpMenu(){
 
