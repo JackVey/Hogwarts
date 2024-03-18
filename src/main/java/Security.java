@@ -8,7 +8,7 @@ public class Security {
             MessageDigest md =  MessageDigest.getInstance("SHA3-256");
             md.update(password.getBytes());
             byte[] digest = md.digest();
-            return new String(digest);
+            return digest.toString();
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
