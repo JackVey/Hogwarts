@@ -1,6 +1,26 @@
+import java.io.FileWriter;
+import java.io.File;
+import java.util.Scanner;
 public class FileHandle {
-    static void writeSingUpData(){
-
+    static void writeSingUpData(String name, String roll){
+        String address = "";
+        switch (roll){
+            case "Student":
+                address = "C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Queued\\Students.txt";
+                break;
+            case "Teacher":
+                address = "C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Queued\\Teachers.txt";
+                break;
+            default:
+                break;
+        }
+        try {
+            FileWriter writer = new FileWriter(address);
+        }
+        catch (Exception e){
+            System.out.println("Something went wrong!");
+            e.printStackTrace();
+        }
     }
     static void readSingUpData(){
 
