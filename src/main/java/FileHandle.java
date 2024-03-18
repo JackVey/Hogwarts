@@ -16,6 +16,7 @@ public class FileHandle {
         }
         try {
             FileWriter writer = new FileWriter(address);
+            writer.write(name + "\n" + roll + "\n");
         }
         catch (Exception e){
             System.out.println("Something went wrong!");
