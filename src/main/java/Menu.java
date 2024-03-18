@@ -1,4 +1,5 @@
 import java.io.Console;
+import java.io.FileWriter;
 import java.util.concurrent.TimeUnit;
 
 public class Menu {
@@ -65,15 +66,28 @@ public class Menu {
         String name = getInput("Enter your name: ");
         if (name.equals("BACK"))
             displayMainMenu();
-        String roll = getInput("Enter your roll: ");
+        String roll = getInput("Enter your roll(Student, Teacher): ");
         if (name.equals("BACK"))
             displayMainMenu();
-
         //TODO -> should pass these arguments to a method to being validated
-
-        System.out.println("Your account will be created soon");
-        getInput("Press Enter to continue...");
-        displayMainMenu();
+        if (roll.equals("Student") || roll.equals("Teacher")) {
+            FileHandle.writeSingUpData(name, roll);
+            System.out.println("Your account will be created soon");
+            getInput("Press Enter to continue...");
+            displayMainMenu();
+        }
+        else{
+            System.out.println("Wrong roll!");
+            try{
+                TimeUnit.SECONDS.sleep(3);
+                clearPage();
+                displaySingUpMenu();
+            }
+            catch (Exception e){
+                clearPage();
+                displaySingUpMenu();
+            }
+        }
     }
     static void displayCourses(){
 
