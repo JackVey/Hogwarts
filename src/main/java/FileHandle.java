@@ -67,8 +67,24 @@ public class FileHandle {
     static void readTeacherAccountData(){
 
     }
-    static void writeAdminAccountData(){
-
+    static void writeAdminAccountData(Admin admin){
+        try {
+            FileWriter clear = new FileWriter("C:\\Users\\varin\\Documents\\Intellij" +
+                    "\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt");
+            clear.write("");
+            FileWriter writer = new FileWriter("C:\\Users\\varin\\Documents\\Intellij" +
+                    "\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt", true);
+            writer.write(admin.getUsername() + "\n");
+            writer.write(admin.getName() + "\n");
+            writer.write(admin.getAccountID() + "\n");
+            byte[] password = admin.getPassword().clone();
+            for (byte i : password){
+                writer.write(i + "\n");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     static Admin readAdminAccountData(String username){
         Admin admin = new Admin();
