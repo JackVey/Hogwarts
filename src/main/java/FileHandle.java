@@ -79,7 +79,6 @@ public class FileHandle {
             FileWriter writer = new FileWriter("Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt", true);
             writer.write(admin.getUsername() + "\n");
             writer.write(admin.getName() + "\n");
-            writer.write(admin.getAccountID() + "\n");
             byte[] password = admin.getPassword().clone();
             for (byte i : password){
                 writer.write(i + "\n");
