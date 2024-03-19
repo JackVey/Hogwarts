@@ -16,12 +16,36 @@ public class Admin implements AccountManagement{
     public void changeUsername(String newUsername) {
         username = newUsername;
     }
-
     @Override
     public void changePassword(String newPassword) {
         password = Security.hashPassword(newPassword);
     }
     public void createNewAdmin(){
 
+    }
+
+    public void setPassword(byte[] password) {
+        this.password = password;
+    }
+    public byte[] getPassword() {
+        return password;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public String getUsername() {
+        return username;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setAccountID(UUID accountID) {
+        this.accountID = accountID;
+    }
+    public UUID getAccountID() {
+        return accountID;
     }
 }
