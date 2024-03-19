@@ -77,29 +77,26 @@ public class Menu {
                 displaySingInMenu();
             }
         }
-        try {
-            if (accountList.contains(username)) {
-                switch (roll){
-                    case "Admin":
-                        Admin admin = FileHandle.readAdminAccountData(username);
-                        if (admin.validatePassword(password)){
-                            displayAdminDashboard();
+        if (accountList.contains(username)) {
+            switch (roll){
+                case "Admin":
+                    Admin admin = FileHandle.readAdminAccountData(username);
+                    if (admin.validatePassword(password)){
+                            admin.displayDashboard();
                         }
-                        break;
-                    case "Student":
-
-                        break;
-                    case "Teacher":
-                        break;
-                }
-
+                    break;
+                case "Student":
+                    break;
+                case "Teacher":
+                    break;
             }
+
         }
-        catch (Exception e) {
-                System.out.println("username or password is wrong!");
-                getInput("Press enter to continue...");
-                displaySingInMenu();
-            }
+        else {
+            System.out.println("username or password is wrong!");
+            getInput("Press enter to continue...");
+            displaySingInMenu();
+        }
     }
     static void displaySingUpMenu(){
         clearPage();
