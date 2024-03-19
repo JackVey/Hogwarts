@@ -87,7 +87,7 @@ public class Menu {
                         }
                         break;
                     case "Student":
-                        
+
                         break;
                     case "Teacher":
                         break;
@@ -152,7 +152,7 @@ public class Menu {
 
     }
     static void clearPage(){
-        System.out.print("\033[H\033[2J");
+        System.out.print("\033\143");
         System.out.flush();
     }
     static String getInput(String message){
