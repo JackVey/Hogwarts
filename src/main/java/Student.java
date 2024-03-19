@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Student implements AccountManagement{
     private String name;
     private String username;
-    private String password;
+    private byte[] password = new byte[32];
     private String house;
     //TODO -> should hash it in Security class
     private UUID accountID;
