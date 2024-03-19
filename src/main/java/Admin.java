@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -15,17 +16,20 @@ public class Admin implements AccountManagement{
     }
     @Override
     public void changeUsername(String newUsername) {
+        String oldUsername = username;
         username = newUsername;
-        FileHandle.writeAdminAccountData(this);
+        FileHandle.writeAdminAccountData(this, oldUsername);
         System.out.println("Username has been changed");
         Menu.getInput("Press enter to continue...");
+        this.displayProfile();
     }
     @Override
     public void changePassword(String newPassword) {
         password = Security.hashPassword(newPassword).clone();
-        FileHandle.writeAdminAccountData(this);
+        FileHandle.writeAdminAccountData(this, username);
         System.out.println("Password has been changed");
         Menu.getInput("Press enter to continue...");
+        this.displayProfile();
     }
     @Override
     public void displayDashboard(){
@@ -38,6 +42,7 @@ public class Admin implements AccountManagement{
         System.out.println("[5] Logout");
         switch (Menu.getInput("Please choose a function by its number: ")){
             case "1":
+                this.displayProfile();
                 break;
             case "2":
                 break;
@@ -69,7 +74,7 @@ public class Admin implements AccountManagement{
         System.out.println("Name: " + name);
         System.out.println("Username: " + username);
         System.out.println("Account ID: " + accountID);
-        System.out.println("Actions\n[1] Change username\n[2] Change password");
+        System.out.println("Actions\n[1] Change username\n[2] Change password\n[3] Back");
         switch (Menu.getInput("Please choose a function by its number: ")){
             case "1":
                 Menu.clearPage();
@@ -92,6 +97,9 @@ public class Admin implements AccountManagement{
                 else{
                     displayProfile();
                 }
+                break;
+            case "3":
+                displayDashboard();
                 break;
             default:
                 System.out.println("invalid input!");
