@@ -28,4 +28,13 @@ public class Student implements AccountManagement{
     public void changePassword(String newPassword) {
         password = Security.hashPassword(newPassword);
     }
+
+    @Override
+    public void displayDashboard() {
+
+    }
+    @Override
+    public void displayProfile() {
+
+    }
 }
