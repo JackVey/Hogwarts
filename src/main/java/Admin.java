@@ -3,7 +3,7 @@ import java.util.UUID;
 public class Admin implements AccountManagement{
     private String name;
     private String username;
-    private String password;
+    private byte[] password = new byte[32];
     private UUID accountID;
     @Override
     public boolean validatePassword(String enteredPassword) {
