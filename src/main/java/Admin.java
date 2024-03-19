@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.UUID;
 
 public class Admin implements AccountManagement{
@@ -7,7 +8,7 @@ public class Admin implements AccountManagement{
     private UUID accountID;
     @Override
     public boolean validatePassword(String enteredPassword) {
-        if (Security.hashPassword(enteredPassword).equals(password))
+        if (Arrays.equals(password, Security.hashPassword(enteredPassword)))
             return true;
         return false;
     }
