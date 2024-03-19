@@ -102,6 +102,26 @@ public class FileHandle {
             e.printStackTrace();
         }
     }
+    static void writeNewAdminAccountData(Admin newAdmin){
+        try {
+            File file = new File("Files\\Accounts\\Admins\\" + newAdmin.getUsername() + ".txt");
+            file.createNewFile();
+            FileWriter writer = new FileWriter(file);
+            writer.write(newAdmin.getUsername() + "\n");
+            writer.write(newAdmin.getName() + "\n");
+            byte[] password = newAdmin.getPassword().clone();
+            for (byte i : password){
+                writer.write(i + "\n");
+            }
+            writer.close();
+            FileWriter writer2 = new FileWriter("Files\\Accounts\\AdminsList.txt", true);
+            writer2.write("\n" + newAdmin.getUsername());
+            writer2.close();
+        }
+        catch (Exception e){
+            System.out.println("Couldn't creat file or it already exist!");
+        }
+    }
     static Admin readAdminAccountData(String username){
         Admin admin = new Admin();
         byte[] bytes = new byte[32];
