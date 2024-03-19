@@ -2,7 +2,6 @@ import java.io.FileWriter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.UUID;
 
 public class FileHandle {
     static void writeSingUpData(String name, String roll){
@@ -29,7 +28,7 @@ public class FileHandle {
     static void readSingUpData(){
 
     }
-    static ArrayList<String> readSingInData(String roll){
+    static ArrayList<String> readAccountsListData(String roll){
         String address = "";
         ArrayList<String> accountList = new ArrayList<>();
         switch (roll){
@@ -87,7 +86,7 @@ public class FileHandle {
             if (file.exists()){
                 file.delete();
             }
-            ArrayList<String> adminList = readSingInData("Admin");
+            ArrayList<String> adminList = readAccountsListData("Admin");
             adminList.set(adminList.indexOf(username) ,admin.getUsername());
             FileWriter clear2 = new FileWriter("Files\\Accounts\\AdminsList.txt");
             clear2.write("");

@@ -1,5 +1,4 @@
 import java.io.Console;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -64,7 +63,7 @@ public class Menu {
             displayMainMenu();
         }
         if (roll.equals("Student") || roll.equals("Admin") || roll.equals("Teacher")){
-            accountList = FileHandle.readSingInData(roll);
+            accountList = FileHandle.readAccountsListData(roll);
         }
         else{
             System.out.println("Wrong roll!");
