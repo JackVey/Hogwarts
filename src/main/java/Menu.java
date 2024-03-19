@@ -1,5 +1,6 @@
 import java.io.Console;
 import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class Menu {
@@ -44,21 +45,61 @@ public class Menu {
 
     }
     static void displayAdminDashboard(){
-
+        getInput("Press enter continue...");
     }
     static void displaySingInMenu(){
         clearPage();
+        ArrayList<String> accountList = new ArrayList<>();
         System.out.println("Enter required infos or type BACK to return");
         String username = getInput("Enter username: ");
-        if (username.equals("BACK"))
+        if (username.equals("BACK")) {
             displayMainMenu();
+        }
         String password = getInput("Enter password: ");
-        if (password.equals("BACK"))
+        if (password.equals("BACK")) {
             displayMainMenu();
+        }
         String roll = getInput("Enter your roll(Student, Teacher, Admin): ");
-        if (roll.equals("BACK"))
+        if (roll.equals("BACK")) {
             displayMainMenu();
-        //TODO -> should pass these arguments to a method to being validated
+        }
+        if (roll.equals("Student") || roll.equals("Admin") || roll.equals("Teacher")){
+            accountList = FileHandle.readSingInData(roll);
+        }
+        else{
+            System.out.println("Wrong roll!");
+            try {
+                TimeUnit.SECONDS.sleep(3);
+                clearPage();
+                displaySingInMenu();
+            } catch (Exception e) {
+                clearPage();
+                displaySingInMenu();
+            }
+        }
+        try {
+            if (accountList.contains(username)) {
+                switch (roll){
+                    case "Admin":
+                        Admin admin = FileHandle.readAdminAccountData(username);
+                        if (admin.validatePassword(password)){
+                            displayAdminDashboard();
+                        }
+                        break;
+                    case "Student":
+                        
+                        break;
+                    case "Teacher":
+                        break;
+                }
+
+            }
+        }
+        catch (Exception e) {
+                System.out.println("username or password is wrong!");
+                getInput("Press enter to continue...");
+                displaySingInMenu();
+            }
     }
     static void displaySingUpMenu(){
         clearPage();
