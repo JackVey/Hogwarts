@@ -14,9 +14,7 @@ public class Student implements AccountManagement{
     private ArrayList<Course> studentCourse = new ArrayList<>();
     @Override
     public boolean validatePassword(String enteredPassword) {
-        if (Arrays.equals(password, Security.hashPassword(enteredPassword)))
-            return true;
-        return false;
+        return Arrays.equals(password, Security.hashPassword(enteredPassword));
     }
 
     @Override
