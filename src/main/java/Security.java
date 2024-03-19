@@ -3,12 +3,12 @@ import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 
 public class Security {
-    static String hashPassword(String password) {
+    static byte[] hashPassword(String password) {
         try {
             MessageDigest md =  MessageDigest.getInstance("SHA3-256");
             md.update(password.getBytes());
             byte[] digest = md.digest();
-            return digest.toString();
+            return digest;
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
