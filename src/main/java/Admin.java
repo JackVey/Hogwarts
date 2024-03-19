@@ -10,9 +10,7 @@ public class Admin implements AccountManagement{
     private UUID accountID;
     @Override
     public boolean validatePassword(String enteredPassword) {
-        if (Arrays.equals(password, Security.hashPassword(enteredPassword)))
-            return true;
-        return false;
+        return Arrays.equals(password, Security.hashPassword(enteredPassword));
     }
     @Override
     public void changeUsername(String newUsername) {
@@ -45,6 +43,7 @@ public class Admin implements AccountManagement{
                 this.displayProfile();
                 break;
             case "2":
+                this.createNewAdmin();
                 break;
             case "3":
                 break;
@@ -116,7 +115,23 @@ public class Admin implements AccountManagement{
         }
     }
     public void createNewAdmin(){
-
+        Menu.clearPage();
+        Admin newAdmin = new Admin();
+        newAdmin.setName(Menu.getInput("Enter new admin name or BACK to return: "));
+        if (newAdmin.getName().equals("BACK")){this.displayDashboard();}
+        newAdmin.setUsername(Menu.getInput("Enter new admin username without space(if space is included, it will be deleted automaticly) or BACK to return: ").replaceAll(" ", ""));
+        if (newAdmin.getUsername().equals("BACK")){this.displayDashboard();}
+        else if (FileHandle.readSingInData("Admin").contains(newAdmin.getUsername())){
+            System.out.println("This username already exist, choose another username");
+            Menu.getInput("Press enter to continue");
+            this.createNewAdmin();
+        }
+        newAdmin.setPassword(Security.hashPassword(Menu.getInput("Enter new admin password or BACK to return: ")));
+        if (Arrays.equals(newAdmin.getPassword(), Security.hashPassword("BACK"))){this.displayDashboard();}
+        FileHandle.writeNewAdminAccountData(newAdmin);
+        System.out.println("New admin account has been created!");
+        Menu.getInput("Press enter to continue...");
+        this.displayDashboard();
     }
     public void setPassword(byte[] password) {
         this.password = password;
