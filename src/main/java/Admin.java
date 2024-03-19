@@ -16,14 +16,14 @@ public class Admin implements AccountManagement{
     @Override
     public void changeUsername(String newUsername) {
         username = newUsername;
-        //TODO -> i have to rewrite the file
+        FileHandle.writeAdminAccountData(this);
         System.out.println("Username has been changed");
         Menu.getInput("Press enter to continue...");
     }
     @Override
     public void changePassword(String newPassword) {
         password = Security.hashPassword(newPassword).clone();
-        //TODO -> i have to rewrite the file
+        FileHandle.writeAdminAccountData(this);
         System.out.println("Password has been changed");
         Menu.getInput("Press enter to continue...");
     }
