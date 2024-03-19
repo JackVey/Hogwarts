@@ -3,4 +3,5 @@ public interface AccountManagement {
     public void changeUsername(String newUsername);
     public void changePassword(String newPassword);
     public void displayDashboard();
+    public void displayProfile();
 }
