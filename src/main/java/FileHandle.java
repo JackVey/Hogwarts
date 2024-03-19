@@ -111,7 +111,7 @@ public class FileHandle {
             Scanner scanner = new Scanner(myFile);
             admin.setUsername(scanner.nextLine());
             admin.setName(scanner.nextLine());
-            admin.setAccountID(UUID.fromString(scanner.nextLine()));
+            admin.setAccountID(Security.setUUID(admin.getName()));
             for (int i = 0 ; i < 32 ; i++){
                 bytes[i] = Byte.parseByte(scanner.nextLine());
             }
