@@ -48,6 +48,7 @@ public class FileHandle {
             while (scanner.hasNextLine()) {
                 accountList.add(scanner.nextLine());
             }
+            scanner.close();
         }
         catch (Exception e){
             System.out.println("Something went wrong!");
@@ -67,11 +68,15 @@ public class FileHandle {
     static void readTeacherAccountData(){
 
     }
-    static void writeAdminAccountData(Admin admin){
+    static void writeAdminAccountData(Admin admin, String username){
+        File file = new File("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + username + ".txt");
+        File rename = new File("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt");
+        file.renameTo(rename);
         try {
             FileWriter clear = new FileWriter("C:\\Users\\varin\\Documents\\Intellij" +
                     "\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt");
             clear.write("");
+            clear.close();
             FileWriter writer = new FileWriter("C:\\Users\\varin\\Documents\\Intellij" +
                     "\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt", true);
             writer.write(admin.getUsername() + "\n");
@@ -81,6 +86,20 @@ public class FileHandle {
             for (byte i : password){
                 writer.write(i + "\n");
             }
+            writer.close();
+            if (file.exists()){
+                file.delete();
+            }
+            ArrayList<String> adminList = readSingInData("Admin");
+            adminList.set(adminList.indexOf(username) ,admin.getUsername());
+            FileWriter clear2 = new FileWriter("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\AdminsList.txt");
+            clear2.write("");
+            clear2.close();
+            FileWriter writer2 = new FileWriter("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\AdminsList.txt", true);
+            for (String i : adminList){
+                writer2.append(i + "\n");
+            }
+            writer2.close();
         }
         catch (Exception e){
             e.printStackTrace();
@@ -100,6 +119,7 @@ public class FileHandle {
                 bytes[i] = Byte.parseByte(scanner.nextLine());
             }
             admin.setPassword(bytes);
+            scanner.close();
             return admin;
         }
         catch (Exception e){
