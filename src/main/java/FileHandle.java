@@ -9,10 +9,10 @@ public class FileHandle {
         String address = "";
         switch (roll){
             case "Student":
-                address = "C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Queued\\Students.txt";
+                address = "Files\\Queued\\Students.txt";
                 break;
             case "Teacher":
-                address = "C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Queued\\Teachers.txt";
+                address = "Files\\Queued\\Teachers.txt";
                 break;
             default:
                 break;
@@ -34,13 +34,13 @@ public class FileHandle {
         ArrayList<String> accountList = new ArrayList<>();
         switch (roll){
             case "Student":
-                address = "C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\StudentsList.txt";
+                address = "Files\\Accounts\\StudentsList.txt";
                 break;
             case "Teacher":
-                address = "C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\TeachersList.txt";
+                address = "Files\\Accounts\\TeachersList.txt";
                 break;
             case "Admin":
-                address = "C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\AdminsList.txt";
+                address = "Files\\Accounts\\AdminsList.txt";
                 break;
         }
         try {
@@ -69,16 +69,14 @@ public class FileHandle {
 
     }
     static void writeAdminAccountData(Admin admin, String username){
-        File file = new File("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + username + ".txt");
-        File rename = new File("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt");
+        File file = new File("Files\\Accounts\\Admins\\" + username + ".txt");
+        File rename = new File("Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt");
         file.renameTo(rename);
         try {
-            FileWriter clear = new FileWriter("C:\\Users\\varin\\Documents\\Intellij" +
-                    "\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt");
+            FileWriter clear = new FileWriter("Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt");
             clear.write("");
             clear.close();
-            FileWriter writer = new FileWriter("C:\\Users\\varin\\Documents\\Intellij" +
-                    "\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt", true);
+            FileWriter writer = new FileWriter("Files\\Accounts\\Admins\\" + admin.getUsername() + ".txt", true);
             writer.write(admin.getUsername() + "\n");
             writer.write(admin.getName() + "\n");
             writer.write(admin.getAccountID() + "\n");
@@ -92,10 +90,10 @@ public class FileHandle {
             }
             ArrayList<String> adminList = readSingInData("Admin");
             adminList.set(adminList.indexOf(username) ,admin.getUsername());
-            FileWriter clear2 = new FileWriter("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\AdminsList.txt");
+            FileWriter clear2 = new FileWriter("Files\\Accounts\\AdminsList.txt");
             clear2.write("");
             clear2.close();
-            FileWriter writer2 = new FileWriter("C:\\Users\\varin\\Documents\\Intellij\\Hogwarts\\src\\main\\java\\Files\\Accounts\\AdminsList.txt", true);
+            FileWriter writer2 = new FileWriter("Files\\Accounts\\AdminsList.txt", true);
             for (String i : adminList){
                 writer2.append(i + "\n");
             }
@@ -109,8 +107,7 @@ public class FileHandle {
         Admin admin = new Admin();
         byte[] bytes = new byte[32];
         try {
-            File myFile = new File("C:\\Users\\varin\\Documents\\Intellij" +
-                    "\\Hogwarts\\src\\main\\java\\Files\\Accounts\\Admins\\" + username + ".txt");
+            File myFile = new File("Files\\Accounts\\Admins\\" + username + ".txt");
             Scanner scanner = new Scanner(myFile);
             admin.setUsername(scanner.nextLine());
             admin.setName(scanner.nextLine());
