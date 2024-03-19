@@ -1,5 +1,6 @@
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.UUID;
 
 public class Student implements AccountManagement{
@@ -13,7 +14,7 @@ public class Student implements AccountManagement{
     private ArrayList<Course> studentCourse = new ArrayList<>();
     @Override
     public boolean validatePassword(String enteredPassword) {
-        if (Security.hashPassword(enteredPassword).equals(password))
+        if (Arrays.equals(password, Security.hashPassword(enteredPassword)))
             return true;
         return false;
     }
