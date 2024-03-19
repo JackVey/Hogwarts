@@ -7,9 +7,9 @@ public class Student implements AccountManagement{
     private String name;
     private String username;
     private byte[] password = new byte[32];
-    private String house;
     //TODO -> should hash it in Security class
     private UUID accountID;
+    private String house;
     //TODO -> should set it in Security class
     private ArrayList<Course> studentCourse = new ArrayList<>();
     @Override
