@@ -217,7 +217,12 @@ public class Admin implements AccountManagement{
                 Menu.clearPage();
                 String input = Menu.getInput("Enter new username or BACK to return: ");
                 if (!input.equals("BACK")) {
-                    student.changeUsername(input);
+                    String oldName = student.getUsername();
+                    student.setUsername(input);
+                    FileHandle.writeStudentAccountData(student, oldName);
+                    System.out.println("Username has been changed");
+                    Menu.getInput("Press enter to continue...");
+                    viewAndEditStudent(student);
                 }
                 else{
                     this.viewAndEditStudent(student);
@@ -226,7 +231,11 @@ public class Admin implements AccountManagement{
             case "2":
                 String input2 = Menu.getInput("Enter the new password or BACK to return: ");
                 if (!input2.equals("BACK")) {
-                        student.changePassword(input2);
+                    student.setPassword(Security.hashPassword(input2));
+                    FileHandle.writeStudentAccountData(student, student.getUsername());
+                    System.out.println("Password has been changed");
+                    Menu.getInput("Press enter to continue...");
+                    viewAndEditStudent(student);
                 }
                 else{
                     this.viewAndEditStudent(student);
@@ -270,7 +279,12 @@ public class Admin implements AccountManagement{
                 Menu.clearPage();
                 String input = Menu.getInput("Enter new username or BACK to return: ");
                 if (!input.equals("BACK")) {
-                    teacher.changeUsername(input);
+                    String oldName = teacher.getUsername();
+                    teacher.setUsername(input);
+                    FileHandle.writeTeacherAccountData(teacher, oldName);
+                    System.out.println("Username has been changed");
+                    Menu.getInput("Press enter to continue...");
+                    viewAndEditTeacher(teacher);
                 }
                 else{
                     this.viewAndEditTeacher(teacher);
@@ -279,7 +293,11 @@ public class Admin implements AccountManagement{
             case "2":
                 String input2 = Menu.getInput("Enter the new password or BACK to return: ");
                 if (!input2.equals("BACK")) {
-                    teacher.changePassword(input2);
+                    teacher.setPassword(Security.hashPassword(input2));
+                    FileHandle.writeTeacherAccountData(teacher, teacher.getUsername());
+                    System.out.println("Password has been changed");
+                    Menu.getInput("Press enter to continue...");
+                    viewAndEditTeacher(teacher);
                 }
                 else{
                     this.viewAndEditTeacher(teacher);
@@ -445,6 +463,7 @@ public class Admin implements AccountManagement{
             course.setTeachers(new ArrayList<>());
             course.setEnrolledStudents(new ArrayList<>());
             FileHandle.writeNewCourseData(course);
+            manageCourses();
         }
     }
     public void setPassword(byte[] password) {

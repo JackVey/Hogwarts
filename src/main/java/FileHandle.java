@@ -107,7 +107,7 @@ public class FileHandle {
             ArrayList<String> studentList = readListData("Student");
             studentList.set(studentList.indexOf(oldUsername) ,student.getUsername());
             JSONArray studentListJson = new JSONArray(studentList.toArray());
-            FileWriter writer1 = new FileWriter("Files\\StudentsList.txt");
+            FileWriter writer1 = new FileWriter("Files\\Accounts\\StudentsList.txt");
             writer1.write(studentListJson.toString());
             writer1.close();
         }
@@ -212,7 +212,7 @@ public class FileHandle {
             ArrayList<String> teacherList = readListData("Teacher");
             teacherList.set(teacherList.indexOf(oldUsername) ,teacher.getUsername());
             JSONArray studentListJson = new JSONArray(teacherList.toArray());
-            FileWriter writer1 = new FileWriter("Files\\TeachersList.txt");
+            FileWriter writer1 = new FileWriter("Files\\Accounts\\TeachersList.txt");
             writer1.write(studentListJson.toString());
             writer1.close();
         }
@@ -382,6 +382,7 @@ public class FileHandle {
     }
     static void writeNewCourseData(Course newCourse){
         File file = new File("Files\\Courses\\" + newCourse.getName() + ".txt");
+        File courseListFile = new File("Files\\Courses\\CoursesList.txt");
         try {
             if (file.createNewFile()){
                 JSONObject course = new JSONObject();
@@ -390,6 +391,14 @@ public class FileHandle {
                 FileWriter writer = new FileWriter(file);
                 writer.write(course.toString());
                 writer.close();
+                Scanner scanner = new Scanner(courseListFile);
+                JSONArray courseArray = new JSONArray(scanner.nextLine());
+                scanner.close();
+                courseArray.put(newCourse.getName());
+                FileWriter writer1 = new FileWriter(courseListFile);
+                writer1.write(courseArray.toString());
+                writer1.close();
+                Menu.getInput("Course has been created!\nPress enter to continue...");
             }
             else{
                 Menu.getInput("Course already exist!\nPress enter to continue...");
