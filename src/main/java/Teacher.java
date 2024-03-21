@@ -41,7 +41,8 @@ public class Teacher implements AccountManagement{
         System.out.println("Welcome, " + username);
         System.out.println("[1] Profile");
         System.out.println("[2] Manage courses");
-        System.out.println("[3] Logout");
+        System.out.println("[3] Hogwarts central");
+        System.out.println("[4] Logout");
         switch (Menu.getInput("Please choose a function by its number: ")){
             case "1":
                 this.displayProfile();
@@ -50,6 +51,10 @@ public class Teacher implements AccountManagement{
                 this.manageCoursesPanel();
                 break;
             case "3":
+                Hogwarts.displayHomeMenu();
+                this.displayDashboard();
+                break;
+            case "4":
                 Menu.displayMainMenu();
                 break;
             default:
@@ -126,7 +131,7 @@ public class Teacher implements AccountManagement{
                 System.out.println("Courses you haven't taken");
                 ArrayList<String> allCourses = FileHandle.readListData("Course");
                 for (int i = 0 ; i < allCourses.size() ; i++){
-                    if (!this.takenCourse.get(i).getName().equals(allCourses.get(i))){
+                    if (!this.takenCourse.get(i).getName().equals(allCourses.get(i).replaceAll(" ",""))){
                         System.out.println(i + 1 + "- " + allCourses.get(i));
                     }
                 }
@@ -134,6 +139,11 @@ public class Teacher implements AccountManagement{
                 if (!input.equals("BACK")){
                     try {
                         takenCourse.add(FileHandle.readCourseData(allCourses.get(Integer.parseInt(input))));
+                        Course course = FileHandle.readCourseData(allCourses.get(Integer.parseInt(input)));
+                        ArrayList<String> teachers = course.getTeachers();
+                        teachers.add(this.username);
+                        course.setTeachers(teachers);
+                        FileHandle.writeCourseData(course);
                         FileHandle.writeTeacherAccountData(this, this.username);
                     }
                     catch (Exception e){

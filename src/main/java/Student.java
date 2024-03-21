@@ -1,4 +1,5 @@
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -44,7 +45,8 @@ public class Student implements AccountManagement{
         System.out.println("[1] Profile");
         System.out.println("[2] Manage courses");
         System.out.println("[3] Sorting quiz");
-        System.out.println("[4] Logout");
+        System.out.println("[4] Hogwarts central");
+        System.out.println("[5] Logout");
         switch (Menu.getInput("Please choose a function by its number: ")){
             case "1":
                 this.displayProfile();
@@ -53,8 +55,19 @@ public class Student implements AccountManagement{
                 this.manageCoursesPanel();
                 break;
             case "3":
+                if (getHouse().isEmpty()){
+                    sortingQuiz();
+                }
+                else{
+                    Menu.getInput("You already have a house!\nPress enter to continue...");
+                    displayDashboard();
+                }
                 break;
             case "4":
+                Hogwarts.displayHomeMenu();
+                this.displayDashboard();
+                break;
+            case "5":
                 Menu.displayMainMenu();
                 break;
             default:
@@ -140,7 +153,7 @@ public class Student implements AccountManagement{
                 System.out.println("Courses you haven't taken");
                 ArrayList<String> allCourses = FileHandle.readListData("Course");
                 for (int i = 0 ; i < allCourses.size() ; i++){
-                    if (!this.studentCourse.get(i).getName().equals(allCourses.get(i))){
+                    if (!this.studentCourse.get(i).getName().equals(allCourses.get(i).replaceAll(" ", ""))){
                         System.out.println(i + 1 + "- " + allCourses.get(i));
                     }
                 }
@@ -148,6 +161,14 @@ public class Student implements AccountManagement{
                 if (!input.equals("BACK")){
                     try {
                         studentCourse.add(FileHandle.readCourseData(allCourses.get(Integer.parseInt(input))));
+                        JSONArray newScores = getScores();
+                        newScores.put(new JSONObject().put(allCourses.get(Integer.parseInt(input)), 0));
+                        this.setScores(newScores);
+                        Course course = FileHandle.readCourseData(allCourses.get(Integer.parseInt(input)));
+                        ArrayList<String> enrolledStudents = course.getEnrolledStudents();
+                        enrolledStudents.add(this.username);
+                        course.setEnrolledStudents(enrolledStudents);
+                        FileHandle.writeCourseData(course);
                         FileHandle.writeStudentAccountData(this, this.username);
                     }
                     catch (Exception e){
@@ -158,8 +179,8 @@ public class Student implements AccountManagement{
                 manageCoursesPanel();
                 break;
             case "2":
-                for (int i = 0; i < studentCourse.size(); i++) {
-                    System.out.println(studentCourse.get(i).getTeachers());
+                for (Course course : studentCourse) {
+                    System.out.println(course.getTeachers());
                 }
                 Menu.getInput("Press enter to continue...");
                 manageCoursesPanel();
@@ -222,5 +243,37 @@ public class Student implements AccountManagement{
     }
     public JSONArray getScores() {
         return scores;
+    }
+    public void sortingQuiz(){
+        Menu.clearPage();
+        System.out.println("Sorting quiz: ");
+        System.out.println("Which house do you want to be in?");
+        System.out.println("[1] Gryffindor\n[2] Hufflepuff\n[3] Ravenclaw\n[4] Slytherin");
+        switch (Menu.getInput("Select a house: ")){
+            case "1":
+                setHouse("Gryffindor");
+                break;
+            case "2":
+                setHouse("Hufflepuff");
+                break;
+            case "3":
+                setHouse("Ravenclaw");
+                break;
+            case "4":
+                setHouse("Slytherin");
+                break;
+            default:
+                System.out.println("invalid input!");
+                try{
+                    TimeUnit.SECONDS.sleep(3);
+                    Menu.clearPage();
+                    this.sortingQuiz();
+                }
+                catch (Exception e){
+                    Menu.clearPage();
+                    this.sortingQuiz();
+                }
+                break;
+        }
     }
 }

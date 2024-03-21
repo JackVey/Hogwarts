@@ -34,18 +34,6 @@ public class Menu {
                 break;
         }
     }
-    static void displayHomeMenu(){
-
-    }
-    static void displayStudentDashboard(){
-
-    }
-    static void displayTeacherDashboard(){
-
-    }
-    static void displayAdminDashboard(){
-        getInput("Press enter continue...");
-    }
     static void displaySingInMenu(){
         clearPage();
         ArrayList<String> accountList = new ArrayList<>();
@@ -63,7 +51,7 @@ public class Menu {
             displayMainMenu();
         }
         if (roll.equals("Student") || roll.equals("Admin") || roll.equals("Teacher")){
-            accountList = FileHandle.readAccountsListData(roll);
+            accountList = FileHandle.readListData(roll);
         }
         else{
             System.out.println("Wrong roll!");
@@ -109,7 +97,7 @@ public class Menu {
         //TODO -> should pass these arguments to a method to being validated
         if (roll.equals("Student") || roll.equals("Teacher")) {
             FileHandle.writeSingUpData(name, roll);
-            System.out.println("Your account will be created soon");
+            System.out.println("Your account will be created soon\ndefault password will be 12345 and username is your name without spaces");
             getInput("Press Enter to continue...");
             displayMainMenu();
         }
@@ -125,27 +113,6 @@ public class Menu {
                 displaySingUpMenu();
             }
         }
-    }
-    static void displayCourses(){
-
-    }
-    static void displayTeachers(){
-
-    }
-    static void displayStudents(){
-
-    }
-    static void displayAdmins(){
-
-    }
-    static void displaySearchMenu(){
-
-    }
-    static void displayCommentMenu(){
-
-    }
-    static void displayRatingMenu(){
-
     }
     static void clearPage(){
         System.out.print("\033\143");

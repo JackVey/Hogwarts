@@ -4,6 +4,7 @@ import org.json.JSONObject;
 import java.io.FileWriter;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class FileHandle {
@@ -22,20 +23,39 @@ public class FileHandle {
         try {
             File file = new File(address);
             Scanner scanner = new Scanner(file);
-            FileWriter writer = new FileWriter(file);
             JSONArray singUpData = new JSONArray(scanner.nextLine());
             scanner.close();
             singUpData.put(name);
+            FileWriter writer = new FileWriter(file);
             writer.write(singUpData.toString());
             writer.close();
         }
         catch (Exception e){
-            System.out.println("Something went wrong!");
             e.printStackTrace();
+            Menu.getInput("Something went wrong!\nPress enter to continue");
         }
     }
-    static void readSingUpData(){
-
+    static JSONArray readSingUpData(String roll){
+        String address = "";
+        switch (roll){
+            case "Student":
+                address = "Files\\Queued\\Students.txt";
+                break;
+            case "Teacher":
+                address = "Files\\Queued\\Teachers.txt";
+                break;
+        }
+        try {
+            File file = new File(address);
+            Scanner scanner = new Scanner(file);
+            JSONArray requestList = new JSONArray(scanner.nextLine());
+            scanner.close();
+            return requestList;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
     static ArrayList<String> readListData(String roll){
         String address = "";
@@ -95,6 +115,37 @@ public class FileHandle {
             e.printStackTrace();
         }
     }
+    static void writeNewStudentAccountData(Student student){
+        File file = new File("Files\\Accounts\\Students\\" + student.getUsername() + ".txt");
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                JSONObject studentJson = new JSONObject();
+                studentJson.put("username", student.getUsername());
+                studentJson.put("name", student.getName());
+                studentJson.put("house", student.getHouse());
+                studentJson.put("password", student.getPassword());
+                studentJson.put("courses", student.getStudentCourse().toArray());
+                studentJson.put("scores", student.getScores());
+                FileWriter writer = new FileWriter(file);
+                writer.write(studentJson.toString());
+                writer.close();
+                ArrayList<String> studentList = readListData("Student");
+                studentList.add(student.getUsername());
+                JSONArray studentListJson = new JSONArray(studentList.toArray());
+                FileWriter writer1 = new FileWriter("Files\\StudentsList.txt");
+                writer1.write(studentListJson.toString());
+                writer1.close();
+            }
+            else{
+                Menu.getInput("This user already exist!\nPress enter to continue...");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Something went wrong!");
+        }
+    }
     static Student readStudentAccountData(String username){
         byte[] passBytes = new byte[32];
         Student student = new Student();
@@ -129,7 +180,10 @@ public class FileHandle {
     static void writeTeacherAccountData(Teacher teacher, String oldUsername){
         File file = new File("Files\\Accounts\\Students\\" + oldUsername + ".txt");
         File rename = new File("Files\\Accounts\\Students\\" + teacher.getUsername() + ".txt");
+        File commentFile = new File("Files\\Comments\\" + oldUsername + ".txt");
+        File commentRename = new File("Files\\Comments\\" + teacher.getUsername() + ".txt");
         file.renameTo(rename);
+        commentFile.renameTo(commentRename);
         try {
             FileWriter writer = new FileWriter(rename);
             Scanner scanner = new Scanner(rename);
@@ -151,6 +205,37 @@ public class FileHandle {
         }
         catch (Exception e){
             e.printStackTrace();
+        }
+    }
+    static void writeNewTeacherAccountData(Teacher teacher){
+        File file = new File("Files\\Accounts\\Teachers\\" + teacher.getUsername() + ".txt");
+        File commentFile = new File("Files\\Comments\\" + teacher.getUsername() + ".txt");
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+                commentFile.createNewFile();
+                JSONObject teacherJson = new JSONObject();
+                teacherJson.put("username", teacher.getUsername());
+                teacherJson.put("name", teacher.getName());
+                teacherJson.put("password", teacher.getPassword());
+                teacherJson.put("score", teacher.getScore());
+                teacherJson.put("courses", teacher.getTakenCourse());
+                FileWriter writer = new FileWriter(file);
+                writer.write(teacherJson.toString());
+                writer.close();
+                ArrayList<String> teacherList = readListData("Teacher");
+                teacherList.add(teacher.getUsername());
+                JSONArray teacherListJson = new JSONArray(teacherList.toArray());
+                FileWriter writer1 = new FileWriter("Files\\TeachersList.txt");
+                writer1.write(teacherListJson.toString());
+                writer1.close();
+            } else {
+                Menu.getInput("This user already exist!\nPress enter to continue...");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Something went wrong!");
         }
     }
     static Teacher readTeacherAccountData(String username){
@@ -238,6 +323,7 @@ public class FileHandle {
             JSONObject json = new JSONObject(scanner.nextLine());
             admin.setUsername(json.getString("username"));
             admin.setName(json.getString("name"));
+            admin.setAccountID(Security.setUUID(admin.getName()));
             JSONArray pass = json.getJSONArray("password");
             for (int i = 0; i < 32 ; i++) {
             password[i] = Byte.parseByte(pass.get(i).toString());
@@ -251,8 +337,41 @@ public class FileHandle {
         }
         return null;
     }
-    static void writeCourseData(){
-
+    static void writeCourseData(Course course){
+        File file = new File("Files\\Courses\\" + course.getName() + ".txt");
+        try {
+            Scanner scanner = new Scanner(file);
+            JSONObject courseJson = new JSONObject(scanner.nextLine());
+            scanner.close();
+            courseJson.put("students", course.getEnrolledStudents().toArray());
+            courseJson.put("teachers", course.getTeachers().toArray());
+            FileWriter writer = new FileWriter(file);
+            writer.write(courseJson.toString());
+            writer.close();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            System.out.println("Something went wrong!");
+        }
+    }
+    static void writeNewCourseData(Course newCourse){
+        File file = new File("Files\\Courses\\" + newCourse.getName() + ".txt");
+        try {
+            if (file.createNewFile()){
+                JSONObject course = new JSONObject();
+                course.put("students", new ArrayList<>().toArray());
+                course.put("teachers", new ArrayList<>().toArray());
+                FileWriter writer = new FileWriter(file);
+                writer.write(course.toString());
+                writer.close();
+            }
+            else{
+                Menu.getInput("Course already exist!\nPress enter to continue...");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
     }
     static Course readCourseData(String courseName){
         try {
@@ -281,14 +400,52 @@ public class FileHandle {
         }
         return null;
     }
-    static void writeComment(){
-
+    static void writeComment(Comment comment, String username){
+        File file = new File("Files\\Comments\\" + username + ".txt");
+        try {
+            JSONArray comments;
+            Scanner scanner = new Scanner(file);
+            if (scanner.hasNextLine()){
+                comments = new JSONArray(scanner.nextLine());
+                scanner.close();
+            } else {
+                comments = new JSONArray();
+            }
+            JSONObject newComment = new JSONObject();
+            newComment.put("rate", comment.getRate());
+            newComment.put("comment", comment.getComment());
+            comments.put(newComment);
+            FileWriter writer = new FileWriter(file);
+            writer.write(comments.toString());
+            writer.close();
+        } catch (Exception e){
+          Menu.getInput("Something went wrong!\nPress enter to continue...");
+        }
     }
-    static void readComment(){
+    static ArrayList<Comment> readComment(String username){
+        File file = new File("Files\\Comments\\" + username + ".txt");
+        try {
+            ArrayList<Comment> comments = new ArrayList<>();
+            Scanner scanner = new Scanner(file);
+            if (scanner.hasNextLine()){
+                JSONArray commentsJson = new JSONArray(scanner.nextLine());
+                for (int i = 0 ; i < commentsJson.length() ; i++){
+                    JSONObject co = commentsJson.getJSONObject(i);
+                    Comment com = new Comment();
+                    com.setRate(co.getFloat("rate"));
+                    com.setComment(co.getString("comment"));
+                    comments.add(com);
+                }
+                return comments;
+            }
+            else {
+                return null;
+            }
+        }
+        catch (Exception e){
 
-    }
-    static void writeUserRequest(String roll, String name){
-
+        }
+        return null;
     }
     static void deleteUser(String username){
         File student = new File("Files\\Accounts\\Students\\" + username + ".txt");

@@ -1,3 +1,4 @@
+import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
@@ -46,8 +47,10 @@ public class Admin implements AccountManagement{
                 this.createNewAdmin();
                 break;
             case "3":
+                this.manageUsers();
                 break;
             case "4":
+                this.manageCourses();
                 break;
             case "5":
                 Menu.displayMainMenu();
@@ -123,7 +126,7 @@ public class Admin implements AccountManagement{
                 this.viewAndManageUsers();
                 break;
             case "2":
-
+                this.viewAndManageUserRequests();
                 break;
             case "3":
                 this.displayDashboard();
@@ -305,10 +308,71 @@ public class Admin implements AccountManagement{
     public void viewAndManageUserRequests(){
         System.out.println("View user requests menu");
         System.out.println("[1] Students\n[2] Teachers\n[3] Back");
+        JSONArray requestList;
         switch (Menu.getInput("Please choose a function by its number: ")){
             case "1":
+                requestList = FileHandle.readSingUpData("Student");
+                if (requestList.isEmpty()){
+                    Menu.clearPage();
+                    Menu.getInput("No request is available!\nPress enter to continue...");
+                    viewAndManageUserRequests();
+                }
+                for (int i = 0 ; i < requestList.length() ; i++){
+                    System.out.println((i + 1) + "- " + requestList.get(i));
+                }
+                String input = Menu.getInput("Choose a student request to approve or enter BACK to return: ");
+                if (!input.equals("BACK")){
+                    try{
+                        Student student = new Student();
+                        int chooseStudent = Integer.parseInt(input);
+                        String name = requestList.get(chooseStudent - 1).toString();
+                        student.setName(name);
+                        student.setUsername(name.replaceAll(" ", ""));
+                        student.setPassword(Security.hashPassword("12345"));
+                        student.setScores(new JSONArray());
+                        student.setHouse("");
+                        student.setStudentCourse(new ArrayList<>());
+                        FileHandle.writeNewStudentAccountData(student);
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                        Menu.getInput("Invalid range!\nPress enter to continue...");
+                    }
+                }
+                else{
+                    this.viewAndManageUserRequests();
+                }
                 break;
             case "2":
+                requestList = FileHandle.readSingUpData("Teacher");
+                if (requestList.isEmpty()){
+                    Menu.clearPage();
+                    Menu.getInput("No request is available!\nPress enter to continue...");
+                    viewAndManageUserRequests();
+                }
+                for (int i = 0 ; i < requestList.length() ; i++){
+                    System.out.println((i + 1) + "- " + requestList.get(i));
+                }
+                String input1 = Menu.getInput("Choose a student request to approve or enter BACK to return: ");
+                if (!input1.equals("BACK")) {
+                    try {
+                        Teacher teacher = new Teacher();
+                        int chooseStudent = Integer.parseInt(input1);
+                        String name = requestList.get(chooseStudent - 1).toString();
+                        teacher.setName(name);
+                        teacher.setUsername(name.replaceAll(" ", ""));
+                        teacher.setPassword(Security.hashPassword("12345"));
+                        teacher.setScore(0);
+                        teacher.setTakenCourse(new ArrayList<>());
+                        FileHandle.writeNewTeacherAccountData(teacher);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Menu.getInput("Invalid range!\nPress enter to continue...");
+                    }
+                }
+                else {
+                    this.viewAndManageUserRequests();
+                }
                 break;
             case "3":
                 this.viewAndManageUsers();
@@ -344,6 +408,21 @@ public class Admin implements AccountManagement{
         System.out.println("New admin account has been created!");
         Menu.getInput("Press enter to continue...");
         this.displayDashboard();
+    }
+    public void manageCourses(){
+        Menu.clearPage();
+        ArrayList<String> allCourses = FileHandle.readListData("Course");
+        for (String i : allCourses){
+            System.out.println(i);
+        }
+        String input = Menu.getInput("Enter new course name to creat new course or BACK to return: ");
+        if (!input.equals("BACK")){
+            Course course = new Course();
+            course.setName(input);
+            course.setTeachers(new ArrayList<>());
+            course.setEnrolledStudents(new ArrayList<>());
+            FileHandle.writeNewCourseData(course);
+        }
     }
     public void setPassword(byte[] password) {
         this.password = password;

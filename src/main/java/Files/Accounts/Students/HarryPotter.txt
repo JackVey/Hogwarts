@@ -1,0 +1,1 @@
+{"scores":["Flying":"Not valued","Charms":"Not valued","Potions":"Not valued"],"courses":["Flying","Charms","Potions"],"password":[35,93,26,-64,79,35,-2,-38,-30,-86,103,50,-59,-17,58,80,90,-75,69,-42,-123,-127,66,-119,-35,97,47,40,-19,113,-29,-87],"name":"Harry Potter","house":"Gryffindor","username":"HarryPotter"}
