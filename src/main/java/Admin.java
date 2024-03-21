@@ -120,7 +120,7 @@ public class Admin implements AccountManagement{
     public void manageUsers(){
         Menu.clearPage();
         System.out.println("Manage users menu");
-        System.out.println("[1] View users\n[2] View requests\n[3]");
+        System.out.println("[1] View users\n[2] View requests\n[3] Back");
         switch (Menu.getInput("Please choose a function by its number: ")) {
             case "1":
                 this.viewAndManageUsers();
