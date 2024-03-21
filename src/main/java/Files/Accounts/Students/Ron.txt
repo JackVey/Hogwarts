@@ -1,0 +1,1 @@
+{"courses":["DefenseAgainstTheDarkArts","Astronomy"],"password":[125,78,62,-20,-128,2,103,25,99,-98,-44,-37,-90,-119,22,-21,-108,-57,-92,-102,5,62,5,-56,-7,87,-113,-28,-27,-93,-41,-22],"scores":[{"DefenseAgainstTheDarkArts":0},{"Astronomy":"50"}],"name":"Ron Weasly","house":"Gryffindor","username":"Ron"}

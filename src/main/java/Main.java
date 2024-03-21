@@ -5,10 +5,7 @@
 
 public class Main {
     public static void main(String[] args) {
-        // TODO: Program starts from here
+        Menu.displayMainMenu();
     }
 
-    public static void runMenu() {
-        // TODO: Menu will be shown here...
-    }
 }
