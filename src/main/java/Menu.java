@@ -73,8 +73,16 @@ public class Menu {
                         }
                     break;
                 case "Student":
+                    Student student = FileHandle.readStudentAccountData(username);
+                    if (student.validatePassword(password)){
+                        student.displayDashboard();
+                    }
                     break;
                 case "Teacher":
+                    Teacher teacher = FileHandle.readTeacherAccountData(username);
+                    if (teacher.validatePassword(password)){
+                        teacher.displayDashboard();
+                    }
                     break;
             }
 

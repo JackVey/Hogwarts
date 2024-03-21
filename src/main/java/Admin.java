@@ -156,10 +156,13 @@ public class Admin implements AccountManagement{
                 }
                 //TODO -> should get an input and make a Student variable to store its data
                 try{
-                int input = Integer.parseInt((Menu.getInput("Choose a student: ")));
-                if (input >= 1 && input <= studentsList.size()){
-                    viewAndEditStudent(FileHandle.readStudentAccountData(studentsList.get(input)));
+                String input = Menu.getInput("Choose a student by name: ");
+                if (studentsList.contains(input)){
+                    viewAndEditStudent(FileHandle.readStudentAccountData(input));
                     }
+                else{
+                    viewAndManageUsers();
+                }
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -173,9 +176,12 @@ public class Admin implements AccountManagement{
                 }
                 //TODO -> should get an input and make a Teacher variable to store its data
                 try{
-                    int input = Integer.parseInt((Menu.getInput("Choose a student: ")));
-                    if (input >= 1 && input <= teachersList.size()){
-                        viewAndEditTeacher(FileHandle.readTeacherAccountData(teachersList.get(input)));
+                    String input = Menu.getInput("Choose a teacher: ");
+                    if (teachersList.contains(input)){
+                        viewAndEditTeacher(FileHandle.readTeacherAccountData(input));
+                    }
+                    else{
+                        viewAndManageUsers();
                     }
                 }
                 catch (Exception e){
@@ -205,7 +211,7 @@ public class Admin implements AccountManagement{
         System.out.println("Student's username: " + student.getUsername());
         System.out.println("Student's name: " + student.getName());
         System.out.println("Student's account ID: " + student.getAccountID());
-        System.out.println("Actions: \n[1] Change username\n[2] Change password\n[3] Delete user\n[4]Back");
+        System.out.println("Actions: \n[1] Change username\n[2] Change password\n[3] Delete user\n[4] Back");
         switch (Menu.getInput("Choose a function by its number: ")){
             case "1":
                 Menu.clearPage();
@@ -253,11 +259,12 @@ public class Admin implements AccountManagement{
         }
     }
     public void viewAndEditTeacher(Teacher teacher){
+        Menu.clearPage();
         System.out.println("Teacher edit panel");
         System.out.println("Teacher's username: " + teacher.getUsername());
         System.out.println("Teacher's name: " + teacher.getName());
         System.out.println("Teacher's account ID: " + teacher.getAccountID());
-        System.out.println("Actions: \n[1] Change username\n[2] Change password\n[3] Delete this user\n[4]Back");
+        System.out.println("Actions: \n[1] Change username\n[2] Change password\n[3] Delete this user\n[4] Back");
         switch (Menu.getInput("Choose a function by its number: ")){
             case "1":
                 Menu.clearPage();
@@ -306,6 +313,7 @@ public class Admin implements AccountManagement{
         }
     }
     public void viewAndManageUserRequests(){
+        Menu.clearPage();
         System.out.println("View user requests menu");
         System.out.println("[1] Students\n[2] Teachers\n[3] Back");
         JSONArray requestList;
@@ -317,26 +325,34 @@ public class Admin implements AccountManagement{
                     Menu.getInput("No request is available!\nPress enter to continue...");
                     viewAndManageUserRequests();
                 }
+                ArrayList<String> requestArrayList = new ArrayList<>();
                 for (int i = 0 ; i < requestList.length() ; i++){
                     System.out.println((i + 1) + "- " + requestList.get(i));
+                    requestArrayList.add(requestList.getString(i));
                 }
                 String input = Menu.getInput("Choose a student request to approve or enter BACK to return: ");
                 if (!input.equals("BACK")){
                     try{
-                        Student student = new Student();
-                        int chooseStudent = Integer.parseInt(input);
-                        String name = requestList.get(chooseStudent - 1).toString();
-                        student.setName(name);
-                        student.setUsername(name.replaceAll(" ", ""));
-                        student.setPassword(Security.hashPassword("12345"));
-                        student.setScores(new JSONArray());
-                        student.setHouse("");
-                        student.setStudentCourse(new ArrayList<>());
-                        FileHandle.writeNewStudentAccountData(student);
+                        if (requestArrayList.contains(input)) {
+                            Student student = new Student();
+                            student.setName(input);
+                            student.setUsername(input.replaceAll(" ", ""));
+                            student.setPassword(Security.hashPassword("12345"));
+                            student.setScores(new JSONArray());
+                            student.setHouse("");
+                            student.setStudentCourse(new ArrayList<>());
+                            FileHandle.writeNewStudentAccountData(student);
+                            viewAndManageUserRequests();
+                        }
+                        else {
+                            Menu.getInput("Wrong student name\nPress enter to continue...");
+                            viewAndManageUserRequests();
+                        }
                     }
                     catch (Exception e){
                         e.printStackTrace();
                         Menu.getInput("Invalid range!\nPress enter to continue...");
+                        viewAndManageUserRequests();
                     }
                 }
                 else{
@@ -350,21 +366,28 @@ public class Admin implements AccountManagement{
                     Menu.getInput("No request is available!\nPress enter to continue...");
                     viewAndManageUserRequests();
                 }
+                ArrayList<String> requestTeacherList = new ArrayList<>();
                 for (int i = 0 ; i < requestList.length() ; i++){
                     System.out.println((i + 1) + "- " + requestList.get(i));
+                    requestTeacherList.add(requestList.getString(i));
                 }
                 String input1 = Menu.getInput("Choose a student request to approve or enter BACK to return: ");
                 if (!input1.equals("BACK")) {
                     try {
-                        Teacher teacher = new Teacher();
-                        int chooseStudent = Integer.parseInt(input1);
-                        String name = requestList.get(chooseStudent - 1).toString();
-                        teacher.setName(name);
-                        teacher.setUsername(name.replaceAll(" ", ""));
-                        teacher.setPassword(Security.hashPassword("12345"));
-                        teacher.setScore(0);
-                        teacher.setTakenCourse(new ArrayList<>());
-                        FileHandle.writeNewTeacherAccountData(teacher);
+                        if (requestTeacherList.contains(input1)) {
+                            Teacher teacher = new Teacher();
+                            teacher.setName(input1);
+                            teacher.setUsername(input1.replaceAll(" ", ""));
+                            teacher.setPassword(Security.hashPassword("12345"));
+                            teacher.setScore(0);
+                            teacher.setTakenCourse(new ArrayList<>());
+                            FileHandle.writeNewTeacherAccountData(teacher);
+                            viewAndManageUserRequests();
+                        }
+                        else {
+                            Menu.getInput("Wrong student name\nPress enter to continue...");
+                            viewAndManageUserRequests();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                         Menu.getInput("Invalid range!\nPress enter to continue...");

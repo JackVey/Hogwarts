@@ -117,6 +117,7 @@ public class FileHandle {
     }
     static void writeNewStudentAccountData(Student student){
         File file = new File("Files\\Accounts\\Students\\" + student.getUsername() + ".txt");
+        File queued = new File("Files\\Queued\\Students.txt");
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -132,10 +133,21 @@ public class FileHandle {
                 writer.close();
                 ArrayList<String> studentList = readListData("Student");
                 studentList.add(student.getUsername());
-                JSONArray studentListJson = new JSONArray(studentList.toArray());
-                FileWriter writer1 = new FileWriter("Files\\StudentsList.txt");
-                writer1.write(studentListJson.toString());
+                FileWriter writer1 = new FileWriter("Files\\Accounts\\StudentsList.txt");
+                writer1.write(new JSONArray(studentList.toString()).toString());
                 writer1.close();
+                Scanner scanner = new Scanner(queued);
+                JSONArray queuedArray = new JSONArray(scanner.nextLine());
+                scanner.close();
+                for (int i = 0 ; i < queuedArray.length() ; i++){
+                    if (queuedArray.get(i).toString().equals(student.getName())){
+                        queuedArray.remove(i);
+                    }
+                }
+                Menu.getInput(queuedArray.toString());
+                FileWriter writer2 = new FileWriter(queued);
+                writer2.close();
+                Menu.getInput("New account has been created!\nPress enter to continue...");
             }
             else{
                 Menu.getInput("This user already exist!\nPress enter to continue...");
@@ -173,6 +185,7 @@ public class FileHandle {
             return student;
         }
         catch (Exception e){
+            e.printStackTrace();
             System.out.println("Couldn't find the file!");
         }
         return null;
@@ -210,6 +223,7 @@ public class FileHandle {
     static void writeNewTeacherAccountData(Teacher teacher){
         File file = new File("Files\\Accounts\\Teachers\\" + teacher.getUsername() + ".txt");
         File commentFile = new File("Files\\Comments\\" + teacher.getUsername() + ".txt");
+        File queued = new File("Files\\Queued\\Teachers.txt");
         try {
             if (!file.exists()) {
                 file.createNewFile();
@@ -226,9 +240,21 @@ public class FileHandle {
                 ArrayList<String> teacherList = readListData("Teacher");
                 teacherList.add(teacher.getUsername());
                 JSONArray teacherListJson = new JSONArray(teacherList.toArray());
-                FileWriter writer1 = new FileWriter("Files\\TeachersList.txt");
+                FileWriter writer1 = new FileWriter("Files\\Accounts\\TeachersList.txt");
                 writer1.write(teacherListJson.toString());
                 writer1.close();
+                Scanner scanner = new Scanner(queued);
+                JSONArray queuedArray = new JSONArray(scanner.nextLine());
+                scanner.close();
+                for (int i = 0 ; i < queuedArray.length() ; i++){
+                    if (queuedArray.get(i).toString().equals(teacher.getName())){
+                        queuedArray.remove(i);
+                    }
+                }
+                FileWriter writer2 = new FileWriter(queued);
+                writer2.write(queuedArray.toString());
+                writer2.close();
+                Menu.getInput("New account has been created!\nPress enter to continue...");
             } else {
                 Menu.getInput("This user already exist!\nPress enter to continue...");
             }
@@ -460,9 +486,8 @@ public class FileHandle {
                     JSONArray array = new JSONArray(scanner.nextLine());
                     scanner.close();
                     for (int i = 0; i < array.length() ; i++){
-                        if (array.getString(i).equals(username)){
+                        if (array.get(i).equals(username)){
                             array.remove(i);
-                            break;
                         }
                     }
                     FileWriter writer = new FileWriter("Files\\StudentsList.txt");
