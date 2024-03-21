@@ -1,1 +1,1 @@
-{"students":["HarryPotter"],"teachers":["Snape"]}
+{"students":[],"teachers":["Snape"]}

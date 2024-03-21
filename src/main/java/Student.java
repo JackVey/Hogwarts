@@ -55,7 +55,7 @@ public class Student implements AccountManagement{
                 this.manageCoursesPanel();
                 break;
             case "3":
-                if (getHouse().isEmpty()){
+                if (getHouse().isEmpty() || getHouse().isBlank()){
                     sortingQuiz();
                 }
                 else{
@@ -141,30 +141,46 @@ public class Student implements AccountManagement{
             case "1":
                 Menu.clearPage();
                 System.out.println("Taken courses: ");
-                for (int i = 0 ; i < this.studentCourse.size() ; i++){
-                    System.out.print(i + 1 + "- " + this.studentCourse.get(i).getName());
-                    for (int j = 0 ; j < scores.length() ; j++){
-                        if (scores.getJSONObject(i).has(this.studentCourse.get(i).getName())){
-                            System.out.println(" ,Score: " + scores.getJSONObject(i).get(this.studentCourse.get(i).getName()));
-                            break;
+                if (!studentCourse.isEmpty()) {
+                    for (int i = 0; i < this.studentCourse.size(); i++) {
+                        System.out.println(i + 1 + "- " + this.studentCourse.get(i).getName());
+                        for (int j = 0; j < scores.length(); j++) {
+                            if (scores.getJSONObject(i).has(this.studentCourse.get(i).getName())) {
+                                System.out.println(" ,Score: " + scores.getJSONObject(i).get(this.studentCourse.get(i).getName()));
+                                break;
+                            }
                         }
                     }
                 }
+                else{
+                    System.out.println("You don't have any course yet!");
+                }
                 System.out.println("Courses you haven't taken");
                 ArrayList<String> allCourses = FileHandle.readListData("Course");
-                for (int i = 0 ; i < allCourses.size() ; i++){
-                    if (!this.studentCourse.get(i).getName().equals(allCourses.get(i).replaceAll(" ", ""))){
+                if (!studentCourse.isEmpty()) {
+                    int i = 0;
+                    for (String k : allCourses) {
+                        for (int j = 0; j < studentCourse.size(); j++) {
+                            if (!this.studentCourse.get(j).getName().equals(k.replaceAll(" ", ""))) {
+                                System.out.println(i + 1 + "- " + k);
+                                i++;
+                                break;
+                            }
+                        }
+                    }
+                }else{
+                    for (int i = 0; i < allCourses.size(); i++) {
                         System.out.println(i + 1 + "- " + allCourses.get(i));
                     }
                 }
-                String input = Menu.getInput("Enter a course number to take or BACK to return: ");
+                String input = Menu.getInput("Enter a course name to take or BACK to return: ");
                 if (!input.equals("BACK")){
                     try {
-                        studentCourse.add(FileHandle.readCourseData(allCourses.get(Integer.parseInt(input))));
+                        studentCourse.add(FileHandle.readCourseData(input.replaceAll(" ", "")));
                         JSONArray newScores = getScores();
-                        newScores.put(new JSONObject().put(allCourses.get(Integer.parseInt(input)), 0));
+                        newScores.put(new JSONObject().put(input.replaceAll(" ", ""), 0));
                         this.setScores(newScores);
-                        Course course = FileHandle.readCourseData(allCourses.get(Integer.parseInt(input)));
+                        Course course = FileHandle.readCourseData(input.replaceAll(" ", ""));
                         ArrayList<String> enrolledStudents = course.getEnrolledStudents();
                         enrolledStudents.add(this.username);
                         course.setEnrolledStudents(enrolledStudents);
@@ -180,7 +196,8 @@ public class Student implements AccountManagement{
                 break;
             case "2":
                 for (Course course : studentCourse) {
-                    System.out.println(course.getTeachers());
+                    for (String i : course.getTeachers())
+                        System.out.println(i);
                 }
                 Menu.getInput("Press enter to continue...");
                 manageCoursesPanel();
@@ -252,15 +269,23 @@ public class Student implements AccountManagement{
         switch (Menu.getInput("Select a house: ")){
             case "1":
                 setHouse("Gryffindor");
+                FileHandle.writeStudentAccountData(this, username);
+                this.displayDashboard();
                 break;
             case "2":
                 setHouse("Hufflepuff");
+                FileHandle.writeStudentAccountData(this, username);
+                this.displayDashboard();
                 break;
             case "3":
                 setHouse("Ravenclaw");
+                FileHandle.writeStudentAccountData(this, username);
+                this.displayDashboard();
                 break;
             case "4":
                 setHouse("Slytherin");
+                FileHandle.writeStudentAccountData(this, username);
+                this.displayDashboard();
                 break;
             default:
                 System.out.println("invalid input!");

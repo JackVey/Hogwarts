@@ -125,26 +125,44 @@ public class Teacher implements AccountManagement{
             case "1":
                 Menu.clearPage();
                 System.out.println("Taken courses: ");
-                for (int i = 0 ; i < this.takenCourse.size() ; i++){
-                    System.out.println(i + 1 + "- " + this.takenCourse.get(i).getName());
+                if (!takenCourse.isEmpty()) {
+                    for (int i = 0; i < this.takenCourse.size(); i++) {
+                        System.out.println(i + 1 + "- " + this.takenCourse.get(i).getName());
+                    }
+                }
+                else {
+                    System.out.println("You don't have any course yet!");
                 }
                 System.out.println("Courses you haven't taken");
                 ArrayList<String> allCourses = FileHandle.readListData("Course");
-                for (int i = 0 ; i < allCourses.size() ; i++){
-                    if (!this.takenCourse.get(i).getName().equals(allCourses.get(i).replaceAll(" ",""))){
+                if (!takenCourse.isEmpty()) {
+                    int i = 0;
+                    for (String k : allCourses) {
+                        for (int j = 0; j < takenCourse.size(); j++) {
+                            if (!this.takenCourse.get(j).getName().replaceAll(" ", "").equals(k.replaceAll(" ", ""))) {
+                                System.out.println(i + 1 + "- " + k);
+                                i++;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    for (int i = 0; i < allCourses.size(); i++) {
                         System.out.println(i + 1 + "- " + allCourses.get(i));
                     }
                 }
-                String input = Menu.getInput("Enter a course number to take or BACK to return: ");
+                String input = Menu.getInput("Enter a course name to take or BACK to return: ");
                 if (!input.equals("BACK")){
                     try {
-                        takenCourse.add(FileHandle.readCourseData(allCourses.get(Integer.parseInt(input))));
-                        Course course = FileHandle.readCourseData(allCourses.get(Integer.parseInt(input)));
+                        takenCourse.add(FileHandle.readCourseData(input.replaceAll(" ", "")));
+                        Course course = FileHandle.readCourseData(input.replaceAll(" ", ""));
                         ArrayList<String> teachers = course.getTeachers();
                         teachers.add(this.username);
                         course.setTeachers(teachers);
                         FileHandle.writeCourseData(course);
-                        FileHandle.writeTeacherAccountData(this, this.username);
+                        FileHandle.writeTeacherAccountData(this, this.getUsername());
+                        Menu.getInput("Course has been added!\nPress enter to continue...");
                     }
                     catch (Exception e){
                         Menu.getInput("Invalid input!\nPress enter to continue...");
@@ -158,21 +176,28 @@ public class Teacher implements AccountManagement{
                     System.out.println("Course: " + takenCourse.get(i).getName());
                 }
                 String input1 = Menu.getInput("Choose a course to view its students or BACK to return: ");
+                ArrayList<String> allCourse = new ArrayList<>();
+                for (Course course : takenCourse){
+                    allCourse.add(course.getName());
+                }
                 if (!input1.equals("BACK")) {
-                    if (Integer.parseInt(input1) >= 1 && Integer.parseInt(input1) <= takenCourse.size()) {
-                        for (int j = 0; j < takenCourse.get(Integer.parseInt(input1) - 1).getEnrolledStudents().size() ; j++) {
-                            System.out.println((j + 1) + "- " + takenCourse.get(Integer.parseInt(input1) - 1).getEnrolledStudents().get(j));
+                    if (allCourse.contains(input1)) {
+                        Course getCourse = FileHandle.readCourseData(input1);
+                        for(String name : getCourse.getEnrolledStudents()){
+                            System.out.println(name);
                         }
                         String studentInput = Menu.getInput("Choose a student to score or enter BACK to return: ");
                         if (!studentInput.equals("BACK")){
-                            Student student = FileHandle.readStudentAccountData(takenCourse.get(Integer.parseInt(input1) - 1).getEnrolledStudents().get(Integer.parseInt(studentInput)));
+                            Student student = FileHandle.readStudentAccountData(studentInput);
                             JSONArray scores = student.getScores();
                             for (int k = 0 ; k < scores.length() ; k++){
-                                if(scores.getJSONObject(k).has(takenCourse.get(Integer.parseInt(input1)-1).getName())){
+                                if(scores.getJSONObject(k).has(input1.replaceAll(" ", ""))){
                                     Menu.clearPage();
                                     String score = Menu.getInput("Enter student score(between 0 to 100): ");
                                     if (Integer.parseInt(score) >= 0 && Integer.parseInt(score) <= 100){
-                                        scores.getJSONObject(k).put(takenCourse.get(Integer.parseInt(input1)-1).getName(), score);
+                                        scores.getJSONObject(k).put(input1.replaceAll(" ", ""), score);
+                                        student.setScores(scores);
+                                        FileHandle.writeStudentAccountData(student, student.getUsername());
                                         Menu.getInput("Successfully scored student!\nPress enter to continue...");
                                         manageCoursesPanel();
                                     }

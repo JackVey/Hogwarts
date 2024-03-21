@@ -1,1 +1,1 @@
-{"students":[],"teachers":[]}
+{"teachers":["Snape"],"students":["Ron"]}

@@ -54,7 +54,6 @@ public class Hogwarts {
             Hogwarts.displayHomeMenu();
         }
     }
-
     public static void viewAllStudents() {
         Menu.clearPage();
         ArrayList<String> students = FileHandle.readListData("Student");
@@ -84,6 +83,7 @@ public class Hogwarts {
             System.out.println(i);
         }
         Menu.getInput("Press enter to continue...");
+        displayHomeMenu();
     }
     public static void viewStudentProfile(String username){
         Menu.clearPage();

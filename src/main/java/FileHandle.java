@@ -95,11 +95,15 @@ public class FileHandle {
             Scanner scanner = new Scanner(rename);
             JSONObject studentJson = new JSONObject(scanner.nextLine());
             scanner.close();
+            ArrayList<String> courseList = new ArrayList<>();
+            for (int i = 0; i < student.getStudentCourse().size(); i++) {
+                courseList.add(student.getStudentCourse().get(i).getName());
+            }
             studentJson.put("username", student.getUsername());
             studentJson.put("name", student.getName());
             studentJson.put("house", student.getHouse());
             studentJson.put("password", student.getPassword());
-            studentJson.put("courses", student.getStudentCourse().toArray());
+            studentJson.put("courses", courseList .toArray());
             studentJson.put("scores", student.getScores());
             FileWriter writer = new FileWriter(rename);
             writer.write(studentJson.toString());
@@ -191,22 +195,26 @@ public class FileHandle {
         return null;
     }
     static void writeTeacherAccountData(Teacher teacher, String oldUsername){
-        File file = new File("Files\\Accounts\\Students\\" + oldUsername + ".txt");
-        File rename = new File("Files\\Accounts\\Students\\" + teacher.getUsername() + ".txt");
+        File file = new File("Files\\Accounts\\Teachers\\" + oldUsername + ".txt");
+        File rename = new File("Files\\Accounts\\Teachers\\" + teacher.getUsername() + ".txt");
         File commentFile = new File("Files\\Comments\\" + oldUsername + ".txt");
         File commentRename = new File("Files\\Comments\\" + teacher.getUsername() + ".txt");
         file.renameTo(rename);
         commentFile.renameTo(commentRename);
         try {
-            FileWriter writer = new FileWriter(rename);
             Scanner scanner = new Scanner(rename);
             JSONObject teacherJson = new JSONObject(scanner.nextLine());
             scanner.close();
-            teacherJson.put("courses", teacher.getTakenCourse());
+            ArrayList<String> courseList = new ArrayList<>();
+            for (int i = 0; i < teacher.getTakenCourse().size(); i++) {
+                courseList.add(teacher.getTakenCourse().get(i).getName());
+            }
+            teacherJson.put("courses", courseList.toArray());
             teacherJson.put("password", teacher.getPassword());
             teacherJson.put("name", teacher.getName());
             teacherJson.put("username", teacher.getUsername());
             teacherJson.put("score", teacher.getScore());
+            FileWriter writer = new FileWriter(rename);
             writer.write(teacherJson.toString());
             writer.close();
             ArrayList<String> teacherList = readListData("Teacher");
