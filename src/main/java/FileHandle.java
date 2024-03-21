@@ -418,6 +418,7 @@ public class FileHandle {
             FileWriter writer = new FileWriter(file);
             writer.write(comments.toString());
             writer.close();
+            updateRate(username, comment.getRate());
         } catch (Exception e){
           Menu.getInput("Something went wrong!\nPress enter to continue...");
         }
@@ -439,7 +440,7 @@ public class FileHandle {
                 return comments;
             }
             else {
-                return null;
+                return new ArrayList<>();
             }
         }
         catch (Exception e){
@@ -502,5 +503,10 @@ public class FileHandle {
                 Menu.getInput("Couldn't delete account!\nPress enter to continue...");
             }
         }
+    }
+    static void updateRate(String username, float rate){
+        Teacher teacher = readTeacherAccountData(username);
+        teacher.setScore(teacher.getScore() + rate);
+        writeTeacherAccountData(teacher, teacher.getUsername());
     }
 }
